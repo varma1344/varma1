@@ -1,0 +1,139 @@
+{
+	"info": {
+		"_postman_id": "0928458e-a39e-44f7-8b36-25f173156c1f",
+		"name": "Devices",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "21228477"
+	},
+	"item": [
+		{
+			"name": "AddGateway",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"data\": [\n        {\n            \"patch_type\": \"gateway\",\n            \"patch_status\": \"Active\",\n            \"device_serial\": \"xyz002\",\n            \"tenant_id\": \"tenant3d2b0573-f29c-4bf3-83ae-35e4587cd39a\",\n            \"patch_mac\": \"00:aa:00:01:00:04\",\n            \"tags\": [\n                \"set1\"\n            ],\n            \"sim\": \"1122339991\",\n            \"phone\": \"1122339991\"\n        }\n    ],\n    \"tenantId\": \"tenant3d2b0573-f29c-4bf3-83ae-35e4587cd39a\",\n    \"actionType\": \"device\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/api/patch",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"patch"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DeleteDevice",
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "{{accessToken}}",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "accessToken",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"list\": [\n        {\n            \"patch_uuid\": \"{{CurrentDevice}}\"\n        }\n    ],\n    \"tenantId\": \"{{tenant_id}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/api/patch/delete",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"patch",
+						"delete"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetDevice",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);\r",
+							"var devtype = jsonData.response.patches[0].patch_type\r",
+							"postman.setEnvironmentVariable(devtype + \"_id\", jsonData.response.patches[0].patch_group_id);\r",
+							"postman.setEnvironmentVariable(devtype + \"_mac\", jsonData.response.patches[0].patch_mac);\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "{{accessToken}}",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "accessToken",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"limit\": 1,\r\n    \"offset\": 1,\r\n    \"tenantId\": \"{{tenant_id}}\",\r\n    \"search\": \"ARGW001ECG001\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/api/patch/patchinventory",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"patch",
+						"patchinventory"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

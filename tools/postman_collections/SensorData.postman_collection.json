@@ -1,0 +1,403 @@
+{
+	"info": {
+		"_postman_id": "41f3e9da-0d57-40ae-b058-4eed4ed3486d",
+		"name": "SensorData",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "21228477"
+	},
+	"item": [
+		{
+			"name": "KeepAlive",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"let moment = require('moment');\r",
+							"let milliseconds = moment().valueOf();\r",
+							"postman.setEnvironmentVariable(\"CurrentDatetime\", milliseconds - 1000*60*60*0)"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "{{accessToken}}",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "accessToken",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"version\": \"1.2102\",\r\n    \"gwBattery\": 73.0,\r\n    \"patientUUID\": \"{{CurrentPatient}}\",\r\n    \"keep_alive_time\": {{CurrentDatetime}},\r\n    \"discovered_viva\": \"1654764264\",\r\n    \"discovered_ble\": \"1654764264\",\r\n    \"scan\": false,\r\n    \"reset\": false\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/liveapi/gateway/gateway_keepalive",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"liveapi",
+						"gateway",
+						"gateway_keepalive"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "BP_alphamed",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"let moment = require('moment');\r",
+							"let milliseconds = moment().valueOf();\r",
+							"postman.setEnvironmentVariable(\"CurrentDatetime\", milliseconds - 1000*60*60*0);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "{{accessToken}}",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "accessToken",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"patientUUID\": \"{{CurrentPatient}}\",\r\n    \"deviceType\": \"UrionBP\",\r\n    \"bpd\": 56,\r\n    \"bps\": 61,\r\n    \"timestamp\":  {{CurrentDatetime}}\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/liveapi/gateway/push_data",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"liveapi",
+						"gateway",
+						"push_data"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "BP_ihealth",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"let moment = require('moment');\r",
+							"let milliseconds = moment().valueOf();\r",
+							"postman.setEnvironmentVariable(\"CurrentDatetime\", milliseconds - 1000*60*60*0);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "{{accessToken}}",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "accessToken",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"patientUUID\": \"{{CurrentPatient}}\",\r\n    \"deviceType\": \"BP\",\r\n    \"battery\": 80,\r\n    \"data\": {\r\n        \"deviceID\": \"{{ihealth_mac}}\",\r\n        \"extras\": {\r\n            \"sys\": 120,\r\n            \"dia\": 75,\r\n            \"heartRate\": 100\r\n        }\r\n    },\r\n    \"timestamp\":  {{CurrentDatetime}}\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/liveapi/gateway/push_data",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"liveapi",
+						"gateway",
+						"push_data"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Temp",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"let moment = require('moment');\r",
+							"let milliseconds = moment().valueOf();\r",
+							"postman.setEnvironmentVariable(\"CurrentDatetime\", milliseconds - 1000*60*60*0);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "{{accessToken}}",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "accessToken",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"patientUUID\": \"{{CurrentPatient}}\",\r\n    \"deviceType\": \"Temperature\",\r\n    \"battery\": 77,\r\n    \"value\": 101.0,\r\n    \"deviceId\": \"{{temperature_mac}}\",\r\n    \"mac-address\": \"PRtemp03\",\r\n    \"timestamp\":  {{CurrentDatetime}}\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/liveapi/gateway/push_data",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"liveapi",
+						"gateway",
+						"push_data"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Weight_digital",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"let moment = require('moment');\r",
+							"let milliseconds = moment().valueOf();\r",
+							"postman.setEnvironmentVariable(\"CurrentDatetime\", milliseconds - 1000*60*60*0);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "{{accessToken}}",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "accessToken",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"patientUUID\": \"{{CurrentPatient}}\",\r\n    \"deviceType\": \"BodyFatScale\",\r\n    \"weight\": 90,\r\n    \"timestamp\":  {{CurrentDatetime}}\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/liveapi/gateway/push_data",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"liveapi",
+						"gateway",
+						"push_data"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "spo2",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"let moment = require('moment');\r",
+							"let milliseconds = moment().valueOf();\r",
+							"postman.setEnvironmentVariable(\"CurrentDatetime\", milliseconds - 1000*60*60*0);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "{{accessToken}}",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "accessToken",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"patientUUID\": \"{{CurrentPatient}}\",\r\n    \"deviceType\": \"Checkme_O2\",\r\n    \"spo2\": 95,\r\n    \"battery\": 70,\r\n    \"pi\": 22,\r\n    \"pr\": 20,\r\n    \"timestamp\": {{CurrentDatetime}}\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/liveapi/gateway/push_data",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"liveapi",
+						"gateway",
+						"push_data"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ecg",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"let moment = require('moment');\r",
+							"let milliseconds = moment().valueOf();\r",
+							"//postman.setEnvironmentVariable(\"CurrentDatetime\", milliseconds - 1000*60*60*4 + 1000*60*99);\r",
+							"postman.setEnvironmentVariable(\"CurrentDatetime\", milliseconds);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "{{accessToken}}",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "accessToken",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"patientUUID\": \"{{CurrentPatient}}\",\r\n    \"timestamp\": {{CurrentDatetime}},\r\n    \"battery\": 48,\r\n    \"deviceType\": \"vv330\",\r\n    \"data\": {\r\n        \"deviceID\": \"{{ecg_mac}}\",\r\n        \"extras\": {\r\n            \"HR\": 100,\r\n            \"RR\": 22,\r\n            \"battery\": 50,\r\n            \"ecg\": [\r\n                -740,\r\n                -745,\r\n                -735,\r\n                -747,\r\n                -737,\r\n                -733,\r\n                -735,\r\n                -719,\r\n                -741,\r\n                -714,\r\n                -713,\r\n                -704,\r\n                -701,\r\n                -700,\r\n                -697,\r\n                -693,\r\n                -691,\r\n                -700,\r\n                -698,\r\n                -707,\r\n                -686,\r\n                -682,\r\n                -692,\r\n                -678,\r\n                -661,\r\n                -633,\r\n                -627,\r\n                -630,\r\n                -635,\r\n                -655,\r\n                -667,\r\n                -649,\r\n                -650,\r\n                -653,\r\n                -648,\r\n                -659,\r\n                -800,\r\n                -1116,\r\n                -959,\r\n                148,\r\n                1458,\r\n                1619,\r\n                698,\r\n                -362,\r\n                -568,\r\n                -668,\r\n                -737,\r\n                -768,\r\n                -799,\r\n                -791,\r\n                -789,\r\n                -799,\r\n                -811,\r\n                -832,\r\n                -868,\r\n                -1090,\r\n                -1131,\r\n                -1146,\r\n                -1160,\r\n                -1193,\r\n                -1189,\r\n                -1197,\r\n                -1196,\r\n                -1183,\r\n                -1169,\r\n                -1148,\r\n                -1125,\r\n                -1092,\r\n                -1050,\r\n                -1009,\r\n                -1000,\r\n                -976,\r\n                -971,\r\n                -969,\r\n                -968,\r\n                -971,\r\n                -968,\r\n                -974,\r\n                -952,\r\n                -953,\r\n                -947,\r\n                -955,\r\n                -946,\r\n                -950,\r\n                -954,\r\n                -950,\r\n                -944,\r\n                -944,\r\n                -963,\r\n                -944,\r\n                -946,\r\n                -944,\r\n                -946,\r\n                -936,\r\n                -940,\r\n                -934,\r\n                -925,\r\n                -931,\r\n                -926,\r\n                -943,\r\n                -920,\r\n                -924,\r\n                -920,\r\n                -922,\r\n                -920,\r\n                -920,\r\n                -917,\r\n                -914,\r\n                -908,\r\n                -904,\r\n                -907,\r\n                -861,\r\n                -874,\r\n                -884,\r\n                -891,\r\n                -909,\r\n                -909,\r\n                -910,\r\n                -910,\r\n                -912,\r\n                -918,\r\n                -952,\r\n                -1196,\r\n                -1364,\r\n                -840,\r\n                486,\r\n                1374,\r\n                830\r\n            ]\r\n        }\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/liveapi/gateway/push_data",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"liveapi",
+						"gateway",
+						"push_data"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

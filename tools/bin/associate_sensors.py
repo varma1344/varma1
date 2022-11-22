@@ -1,0 +1,83 @@
+"""
+Associate Sensors to patients
+ python3 associate_sensors.py -S http://us.livehealthyvibes.com:7124 -U demoadmin01@live247.com -P admin123 -T "Demo Hospital 01" --mrn MRNDemo0100000002 --gwserial Demo01g0002 --basename Demo01 --backdays 20
+ python3 associate_sensors.py -S http://us.livehealthyvibes.com:7124 -U demoadmin01@live247.com -P admin123 -T "Demo Hospital 01" --startidx 3 --endidx 8 --basename Demo01 --backdays 20
+"""
+import argparse
+import json
+import os
+import random
+import time
+import sys
+import traceback
+
+sys.path.append(os.path.join(os.path.dirname(__file__), "..", ".."))
+sys.path.append(os.path.join(os.path.dirname(__file__), "..", "..", "automation"))
+print(os.path.join(os.path.dirname(__file__), "..", "..", "automation"))
+
+import automation.libs.rest.restlibs as restlibs
+import automation.testutils.scale_utils.device as devrlib
+
+parser = argparse.ArgumentParser(description='Create Doc or Nurse users')
+parser.add_argument('-T', '--tenant', dest='tenant', help="Tenant name")
+parser.add_argument('-B', '--basename', dest='basename', help="Base Name used for mrn, email, etc")
+parser.add_argument('-S', '--saasurl', dest='saasurl', help="SaaS URL http://40.112.217.42:7141")
+parser.add_argument('-U', '--saasuser', dest='saasuser', help="SaaS User")
+parser.add_argument('-P', '--saaspassword', dest='saaspassword', help="SaaS User")
+parser.add_argument('--basemac', dest='basemac', help="Base mac address to use. e.g., 10:00")
+parser.add_argument('-M', '--mrn', dest='mrn', help="Patient MRN - provide --gwserial. "
+                                                    "Do not use with --startidx and --endidx")
+parser.add_argument('--gwserial', dest='gwserial', help="Gateway Serial to search for devices")
+parser.add_argument('--startidx', dest='startidx', help="Start index used for names", default=0)
+parser.add_argument('--endidx', dest='endidx', help="End index used for names", default=0)
+parser.add_argument('--backdays', dest='backdays', help="Associate sensor start date", default=0)
+parser.add_argument('--ptype', dest='ptype', help="Patient Type", default="Hospital")
+
+
+args = parser.parse_args()
+print(args)
+startidx=int(args.startidx)
+endidx=int(args.endidx)
+
+devlist = devrlib.generate_devices(startidx=int(args.startidx), endidx=int(args.endidx), basename=args.basename,
+                                   bmac="%s:00" % args.basemac, sbmac="%s:01" % args.basemac)
+
+# Get Tenant ID based on name. If this api results in None, then try to use old log
+restobj = restlibs.RestLibs({"url": args.saasurl, "username": args.saasuser, "password": args.saaspassword})
+tenantid = restobj.get_tenant_id(name=args.tenant)
+if tenantid is None:
+    print("Unable to find tenant")
+    sys.exit(1)
+
+restobj.login(tenantid=tenantid)
+
+
+if args.mrn:
+    mrn = args.mrn
+    cnt, patientdata = restobj.get_patient_by_mrn(mrn=mrn, loc=args.ptype)
+    devices = restobj.get_device_inventory(search=args.gwserial)
+    sensors = []
+    for s in devices:
+        if devices[s]["patch_type"] == "gateway":
+            gw = devices[s]
+        else:
+            sensors.append(devices[s])
+    restobj.associate_sensors(patient=patientdata, sensors=sensors, gateway=gw, backdays=int(args.backdays), dryrun=False)
+
+else:
+    patientdata = restobj.get_patient_inventory(type=args.ptype)
+    mrnlist = list(patientdata.keys())
+    mrnlist.sort()
+
+    for i,mrn in enumerate(mrnlist[startidx-1:endidx]):
+        gwserial = devlist[i][0]["device_serial"]
+        devices = restobj.get_device_inventory(search=gwserial)
+        sensors = []
+        for s in devices:
+            if devices[s]["patch_type"] == "gateway":
+                gw = devices[s]
+            else:
+                sensors.append(devices[s])
+
+        restobj.associate_sensors(patient=patientdata[mrn]["demographic_map"], sensors=sensors, gateway=gw,
+                                  backdays=int(args.backdays), dryrun=False)
