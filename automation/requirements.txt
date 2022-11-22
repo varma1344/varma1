@@ -1,0 +1,6 @@
+html-testRunner
+pytest
+pytest-bdd
+requests
+selenium
+pyyaml

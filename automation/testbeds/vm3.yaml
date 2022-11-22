@@ -1,0 +1,10 @@
+name: vm3
+web:
+    url: http://20.230.234.202:7141/
+    username: superadmin@demohospital.com
+    password: admin123
+rest:
+    url: http://20.230.234.202:7124/
+    username: superadmin@demohospital.com
+    password: admin123
+use: web

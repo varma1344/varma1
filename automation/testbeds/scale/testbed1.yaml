@@ -1,0 +1,15 @@
+name: scaletestbed2
+web:
+    url: http://40.112.217.42:7141/
+    username: superadmin@demohospital.com
+    password: admin123
+rest:
+    url: http://40.112.217.42:7124/
+    username: superadmin@demohospital.com
+    password: admin123
+use: web
+userdb:
+    server: 40.112.217.42
+    username: live247_emr
+    pass: mysql_my_password
+    database: openemr

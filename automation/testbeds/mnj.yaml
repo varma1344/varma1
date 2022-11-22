@@ -1,0 +1,12 @@
+name: mnj
+web:
+    url: http://mnj.live-247.in:7141/
+    username: superadmin@mnjcancerhospital.com
+    userlive247: superadmin@live247.com
+    password: admin123
+rest:
+    url: http://mnj.live-247.in:7124/
+    username: superadmin@mnjcancerhospital.com
+    userlive247: superadmin@live247.com
+    password: admin123
+use: web
